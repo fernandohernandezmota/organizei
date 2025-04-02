@@ -32,6 +32,46 @@
         "documentation": {}
     },
     {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "send_from_directory",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
         "label": "datetime",
         "importPath": "datetime",
         "description": "datetime",
@@ -219,6 +259,96 @@
         "documentation": {}
     },
     {
+        "label": "serve_index",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def serve_index():\n    return send_from_directory(\"static\", \"index.html\")\n@app.route(\"/workspaces\", methods=[\"GET\"])\ndef get_workspaces():\n    return jsonify(workspaces)\n@app.route(\"/workspaces\", methods=[\"POST\"])\ndef create_workspace():\n    data = request.get_json()\n    name = data.get(\"name\")\n    if name:",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "get_workspaces",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def get_workspaces():\n    return jsonify(workspaces)\n@app.route(\"/workspaces\", methods=[\"POST\"])\ndef create_workspace():\n    data = request.get_json()\n    name = data.get(\"name\")\n    if name:\n        workspace = {\"id\": len(workspaces) + 1, \"name\": name, \"teams\": []}\n        workspaces.append(workspace)\n        return (",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "create_workspace",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def create_workspace():\n    data = request.get_json()\n    name = data.get(\"name\")\n    if name:\n        workspace = {\"id\": len(workspaces) + 1, \"name\": name, \"teams\": []}\n        workspaces.append(workspace)\n        return (\n            jsonify(\n                {\"message\": \"Workspace criado com sucesso!\", \"workspace\": workspace}\n            ),",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "create_team",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def create_team():\n    data = request.get_json()\n    name = data.get(\"name\")\n    members = data.get(\"members\", [])\n    workspace_id = data.get(\"workspace_id\")\n    if name and workspace_id:\n        for workspace in workspaces:\n            if workspace[\"id\"] == workspace_id:\n                team = {\n                    \"id\": len([t for w in workspaces for t in w[\"teams\"]]) + 1,",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "update_team",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def update_team(team_id):\n    data = request.get_json()\n    new_members = data.get(\"members\", [])\n    for workspace in workspaces:\n        for team in workspace[\"teams\"]:\n            if team[\"id\"] == team_id:\n                team[\"members\"] = new_members\n                return jsonify({\"message\": \"Equipe atualizada com sucesso!\"}), 200\n    return jsonify({\"error\": \"Equipe não encontrada\"}), 404\n@app.route(\"/teams/<int:team_id>/members\", methods=[\"POST\"])",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "add_team_members",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def add_team_members(team_id):\n    data = request.get_json()\n    new_members = data.get(\"members\", [])\n    for workspace in workspaces:\n        for team in workspace[\"teams\"]:\n            if team[\"id\"] == team_id:\n                current_members = set(team[\"members\"])\n                new_unique_members = [\n                    m for m in new_members if m not in current_members\n                ]",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "remove_team_members",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def remove_team_members(team_id):\n    data = request.get_json()\n    members_to_remove = data.get(\"members\", [])\n    for workspace in workspaces:\n        for team in workspace[\"teams\"]:\n            if team[\"id\"] == team_id:\n                team[\"members\"] = [\n                    m for m in team[\"members\"] if m not in members_to_remove\n                ]\n                return (",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "get_tasks",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def get_tasks():\n    workspace_id = request.args.get(\"workspace_id\", type=int)\n    if workspace_id:\n        return jsonify([task for task in tasks if task[\"workspace_id\"] == workspace_id])\n    return jsonify(tasks)\n@app.route(\"/tasks\", methods=[\"POST\"])\ndef add_task():\n    data = request.get_json()\n    title = data.get(\"title\")\n    description = data.get(\"description\", \"\")",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "add_task",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def add_task():\n    data = request.get_json()\n    title = data.get(\"title\")\n    description = data.get(\"description\", \"\")\n    status = data.get(\"status\", \"Para Fazer\")\n    priority = data.get(\"priority\", \"Média\")  # Prioridade padrão\n    start_date = data.get(\"start_date\")\n    due_date = data.get(\"due_date\")\n    assigned_to = data.get(\"assigned_to\", None)\n    workspace_id = data.get(\"workspace_id\")",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "update_task",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def update_task(task_id):\n    data = request.get_json()\n    for task in tasks:\n        if task[\"id\"] == task_id:\n            task[\"status\"] = data.get(\"status\", task[\"status\"])\n            task[\"priority\"] = data.get(\"priority\", task[\"priority\"])\n            task[\"start_date\"] = data.get(\"start_date\", task[\"start_date\"])\n            task[\"due_date\"] = data.get(\"due_date\", task[\"due_date\"])\n            task[\"assigned_to\"] = data.get(\"assigned_to\", task[\"assigned_to\"])\n            return jsonify({\"message\": \"Tarefa atualizada!\"}), 200",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
         "label": "app",
         "kind": 5,
         "importPath": "app",
@@ -287,6 +417,33 @@
         "importPath": "app",
         "description": "app",
         "peekOfCode": "tasks = [\n    {\n        'id': 1,\n        'title': 'Criar apresentação',\n        'description': 'Preparar slides para reunião',\n        'status': 'Para Fazer',\n        'priority': 'Média',\n        'start_date': '2025-04-01',\n        'due_date': '2025-04-05',\n        'assigned_to': 'João',",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "app = Flask(__name__)\n# Lista de workspaces\nworkspaces = [\n    {\n        \"id\": 1,\n        \"name\": \"Projeto Marketing\",\n        \"teams\": [\n            {\"id\": 1, \"name\": \"Equipe A\", \"members\": [\"Alice\", \"Bob\"]},\n            {\"id\": 2, \"name\": \"Equipe B\", \"members\": [\"Charlie\", \"Diana\"]},\n        ],",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "workspaces",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "workspaces = [\n    {\n        \"id\": 1,\n        \"name\": \"Projeto Marketing\",\n        \"teams\": [\n            {\"id\": 1, \"name\": \"Equipe A\", \"members\": [\"Alice\", \"Bob\"]},\n            {\"id\": 2, \"name\": \"Equipe B\", \"members\": [\"Charlie\", \"Diana\"]},\n        ],\n    },\n    {",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "tasks",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "tasks = [\n    {\n        \"id\": 1,\n        \"title\": \"Criar apresentação\",\n        \"description\": \"Preparar slides para reunião\",\n        \"status\": \"Para Fazer\",\n        \"priority\": \"Média\",\n        \"start_date\": \"2025-04-01\",\n        \"due_date\": \"2025-04-05\",\n        \"assigned_to\": \"João\",",
         "detail": "app",
         "documentation": {}
     }

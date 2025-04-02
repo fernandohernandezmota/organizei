@@ -1,0 +1,293 @@
+[
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "send_from_directory",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "secrets",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "secrets",
+        "description": "secrets",
+        "detail": "secrets",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "importPath": "app",
+        "description": "app",
+        "isExtraImport": true,
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "check_permission",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def check_permission(user_id, allowed_roles):\n    user = next((u for u in users if u['id'] == user_id), None)\n    if not user or user['role'] not in allowed_roles:\n        return False\n    return True\ndef send_activation_email(email, token):\n    activation_link = f\"http://127.0.0.1:5000/activate/{token}\"\n    subject = \"Confirme seu cadastro\"\n    body = f\"Olá! Clique no link para confirmar seu cadastro: {activation_link}\"\n    try:",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "send_activation_email",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def send_activation_email(email, token):\n    activation_link = f\"http://127.0.0.1:5000/activate/{token}\"\n    subject = \"Confirme seu cadastro\"\n    body = f\"Olá! Clique no link para confirmar seu cadastro: {activation_link}\"\n    try:\n        response = requests.post(\n            f\"https://api.mailgun.net/v3/{MAILGUN_DOMAIN}/messages\",\n            auth=(\"api\", MAILGUN_API_KEY),\n            data={\n                \"from\": FROM_EMAIL,",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "serve_index",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def serve_index():\n    return send_from_directory('static', 'index.html')\n@app.route('/register', methods=['POST'])\ndef register():\n    try:\n        data = request.get_json()\n        if not data:\n            return jsonify({'error': 'Nenhum dado enviado'}), 400\n        username = data.get('username')\n        password = data.get('password')",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "register",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def register():\n    try:\n        data = request.get_json()\n        if not data:\n            return jsonify({'error': 'Nenhum dado enviado'}), 400\n        username = data.get('username')\n        password = data.get('password')\n        email = data.get('email')\n        if not username or not password or not email:\n            return jsonify({'error': 'Usuário, senha e e-mail são obrigatórios'}), 400",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "activate",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def activate(token):\n    if token in pending_users:\n        user = pending_users.pop(token)\n        users.append(user)\n        return jsonify({'message': f\"Conta ativada com sucesso! Bem-vindo, {user['username']}.\"}), 200\n    return jsonify({'error': 'Token inválido ou expirado'}), 400\n@app.route('/login', methods=['POST'])\ndef login():\n    try:\n        data = request.get_json()",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "login",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def login():\n    try:\n        data = request.get_json()\n        if not data:\n            return jsonify({'error': 'Nenhum dado enviado'}), 400\n        username = data.get('username')\n        password = data.get('password')\n        if not username or not password:\n            return jsonify({'error': 'Usuário e senha são obrigatórios'}), 400\n        user = next((u for u in users if u['username'] == username and u['password'] == password), None)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "get_workspaces",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def get_workspaces():\n    return jsonify(workspaces)\n@app.route('/workspaces', methods=['POST'])\ndef create_workspace():\n    user_id = request.headers.get('User-ID', type=int)\n    if not check_permission(user_id, ['superadmin', 'workspace_manager']):\n        return jsonify({'error': 'Permissão negada'}), 403\n    data = request.get_json()\n    name = data.get('name')\n    if name:",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "create_workspace",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def create_workspace():\n    user_id = request.headers.get('User-ID', type=int)\n    if not check_permission(user_id, ['superadmin', 'workspace_manager']):\n        return jsonify({'error': 'Permissão negada'}), 403\n    data = request.get_json()\n    name = data.get('name')\n    if name:\n        workspace = {\n            'id': len(workspaces) + 1,\n            'name': name,",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "update_workspace",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def update_workspace(workspace_id):\n    user_id = request.headers.get('User-ID', type=int)\n    if not check_permission(user_id, ['superadmin']):\n        return jsonify({'error': 'Permissão negada'}), 403\n    data = request.get_json()\n    name = data.get('name')\n    if not name:\n        return jsonify({'error': 'Nome é obrigatório'}), 400\n    for workspace in workspaces:\n        if workspace['id'] == workspace_id:",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "delete_workspace",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def delete_workspace(workspace_id):\n    user_id = request.headers.get('User-ID', type=int)\n    if not check_permission(user_id, ['superadmin']):\n        return jsonify({'error': 'Permissão negada'}), 403\n    for i, workspace in enumerate(workspaces):\n        if workspace['id'] == workspace_id:\n            global tasks\n            tasks = [task for task in tasks if task['workspace_id'] != workspace_id]\n            del workspaces[i]\n            return jsonify({'message': 'Workspace excluído com sucesso!'}), 200",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "create_team",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def create_team():\n    user_id = request.headers.get('User-ID', type=int)\n    if not check_permission(user_id, ['superadmin', 'workspace_manager', 'team_manager']):\n        return jsonify({'error': 'Permissão negada'}), 403\n    data = request.get_json()\n    name = data.get('name')\n    members = data.get('members', [])\n    workspace_id = data.get('workspace_id')\n    if name and workspace_id:\n        for workspace in workspaces:",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "update_team",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def update_team(team_id):\n    user_id = request.headers.get('User-ID', type=int)\n    if not check_permission(user_id, ['superadmin']):\n        return jsonify({'error': 'Permissão negada'}), 403\n    data = request.get_json()\n    new_members = data.get('members', [])\n    for workspace in workspaces:\n        for team in workspace['teams']:\n            if team['id'] == team_id:\n                team['members'] = new_members",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "add_team_members",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def add_team_members(team_id):\n    user_id = request.headers.get('User-ID', type=int)\n    if not check_permission(user_id, ['superadmin', 'workspace_manager', 'team_manager']):\n        return jsonify({'error': 'Permissão negada'}), 403\n    data = request.get_json()\n    new_members = data.get('members', [])\n    for workspace in workspaces:\n        for team in workspace['teams']:\n            if team['id'] == team_id:\n                current_members = set(team['members'])",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "remove_team_members",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def remove_team_members(team_id):\n    user_id = request.headers.get('User-ID', type=int)\n    if not check_permission(user_id, ['superadmin', 'workspace_manager', 'team_manager']):\n        return jsonify({'error': 'Permissão negada'}), 403\n    data = request.get_json()\n    members_to_remove = data.get('members', [])\n    for workspace in workspaces:\n        for team in workspace['teams']:\n            if team['id'] == team_id:\n                team['members'] = [m for m in team['members'] if m not in members_to_remove]",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "get_tasks",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def get_tasks():\n    workspace_id = request.args.get('workspace_id', type=int)\n    if workspace_id:\n        return jsonify([task for task in tasks if task['workspace_id'] == workspace_id])\n    return jsonify(tasks)\n@app.route('/tasks', methods=['POST'])\ndef add_task():\n    user_id = request.headers.get('User-ID', type=int)\n    if not check_permission(user_id, ['superadmin', 'workspace_manager', 'team_manager', 'task_creator']):\n        return jsonify({'error': 'Permissão negada'}), 403",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "add_task",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def add_task():\n    user_id = request.headers.get('User-ID', type=int)\n    if not check_permission(user_id, ['superadmin', 'workspace_manager', 'team_manager', 'task_creator']):\n        return jsonify({'error': 'Permissão negada'}), 403\n    data = request.get_json()\n    title = data.get('title')\n    description = data.get('description', '')\n    status = data.get('status', 'Para Fazer')\n    priority = data.get('priority', 'Média')\n    start_date = data.get('start_date')",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "update_task",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def update_task(task_id):\n    user_id = request.headers.get('User-ID', type=int)\n    if not check_permission(user_id, ['superadmin']):\n        return jsonify({'error': 'Permissão negada'}), 403\n    data = request.get_json()\n    for task in tasks:\n        if task['id'] == task_id:\n            task['status'] = data.get('status', task['status'])\n            task['priority'] = data.get('priority', task['priority'])\n            task['start_date'] = data.get('start_date', task['start_date'])",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "app = Flask(__name__)\n# Configuração do Mailgun\nMAILGUN_API_KEY = \"sua_api_key_aqui\"  # Substitua pela sua chave do Mailgun\nMAILGUN_DOMAIN = \"sandbox<seu_dominio>.mailgun.org\"  # Substitua pelo seu domínio sandbox\nFROM_EMAIL = f\"no-reply@{MAILGUN_DOMAIN}\"\n# Lista de usuários confirmados\nusers = [\n    {'id': 1, 'username': 'superadmin', 'password': 'super123', 'role': 'superadmin', 'email': 'superadmin@example.com'},\n    {'id': 2, 'username': 'workspacemanager', 'password': 'work123', 'role': 'workspace_manager', 'email': 'work@example.com'},\n    {'id': 3, 'username': 'teammanager', 'password': 'team123', 'role': 'team_manager', 'email': 'team@example.com'},",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "MAILGUN_API_KEY",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "MAILGUN_API_KEY = \"sua_api_key_aqui\"  # Substitua pela sua chave do Mailgun\nMAILGUN_DOMAIN = \"sandbox<seu_dominio>.mailgun.org\"  # Substitua pelo seu domínio sandbox\nFROM_EMAIL = f\"no-reply@{MAILGUN_DOMAIN}\"\n# Lista de usuários confirmados\nusers = [\n    {'id': 1, 'username': 'superadmin', 'password': 'super123', 'role': 'superadmin', 'email': 'superadmin@example.com'},\n    {'id': 2, 'username': 'workspacemanager', 'password': 'work123', 'role': 'workspace_manager', 'email': 'work@example.com'},\n    {'id': 3, 'username': 'teammanager', 'password': 'team123', 'role': 'team_manager', 'email': 'team@example.com'},\n    {'id': 4, 'username': 'taskcreator', 'password': 'task123', 'role': 'task_creator', 'email': 'task@example.com'}\n]",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "MAILGUN_DOMAIN",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "MAILGUN_DOMAIN = \"sandbox<seu_dominio>.mailgun.org\"  # Substitua pelo seu domínio sandbox\nFROM_EMAIL = f\"no-reply@{MAILGUN_DOMAIN}\"\n# Lista de usuários confirmados\nusers = [\n    {'id': 1, 'username': 'superadmin', 'password': 'super123', 'role': 'superadmin', 'email': 'superadmin@example.com'},\n    {'id': 2, 'username': 'workspacemanager', 'password': 'work123', 'role': 'workspace_manager', 'email': 'work@example.com'},\n    {'id': 3, 'username': 'teammanager', 'password': 'team123', 'role': 'team_manager', 'email': 'team@example.com'},\n    {'id': 4, 'username': 'taskcreator', 'password': 'task123', 'role': 'task_creator', 'email': 'task@example.com'}\n]\n# Lista de usuários pendentes (antes da ativação)",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "FROM_EMAIL",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "FROM_EMAIL = f\"no-reply@{MAILGUN_DOMAIN}\"\n# Lista de usuários confirmados\nusers = [\n    {'id': 1, 'username': 'superadmin', 'password': 'super123', 'role': 'superadmin', 'email': 'superadmin@example.com'},\n    {'id': 2, 'username': 'workspacemanager', 'password': 'work123', 'role': 'workspace_manager', 'email': 'work@example.com'},\n    {'id': 3, 'username': 'teammanager', 'password': 'team123', 'role': 'team_manager', 'email': 'team@example.com'},\n    {'id': 4, 'username': 'taskcreator', 'password': 'task123', 'role': 'task_creator', 'email': 'task@example.com'}\n]\n# Lista de usuários pendentes (antes da ativação)\npending_users = {}",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "users",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "users = [\n    {'id': 1, 'username': 'superadmin', 'password': 'super123', 'role': 'superadmin', 'email': 'superadmin@example.com'},\n    {'id': 2, 'username': 'workspacemanager', 'password': 'work123', 'role': 'workspace_manager', 'email': 'work@example.com'},\n    {'id': 3, 'username': 'teammanager', 'password': 'team123', 'role': 'team_manager', 'email': 'team@example.com'},\n    {'id': 4, 'username': 'taskcreator', 'password': 'task123', 'role': 'task_creator', 'email': 'task@example.com'}\n]\n# Lista de usuários pendentes (antes da ativação)\npending_users = {}\n# Lista de workspaces\nworkspaces = [",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "pending_users",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "pending_users = {}\n# Lista de workspaces\nworkspaces = [\n    {\n        'id': 1,\n        'name': 'Projeto Marketing',\n        'teams': [\n            {'id': 1, 'name': 'Equipe A', 'members': ['Alice', 'Bob']},\n            {'id': 2, 'name': 'Equipe B', 'members': ['Charlie', 'Diana']}\n        ]",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "workspaces",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "workspaces = [\n    {\n        'id': 1,\n        'name': 'Projeto Marketing',\n        'teams': [\n            {'id': 1, 'name': 'Equipe A', 'members': ['Alice', 'Bob']},\n            {'id': 2, 'name': 'Equipe B', 'members': ['Charlie', 'Diana']}\n        ]\n    },\n    {",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "tasks",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "tasks = [\n    {\n        'id': 1,\n        'title': 'Criar apresentação',\n        'description': 'Preparar slides para reunião',\n        'status': 'Para Fazer',\n        'priority': 'Média',\n        'start_date': '2025-04-01',\n        'due_date': '2025-04-05',\n        'assigned_to': 'João',",
+        "detail": "app",
+        "documentation": {}
+    }
+]
